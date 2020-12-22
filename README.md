@@ -1,2 +1,4 @@
 # MineWebCMS-LightInstall
-Online only installation of the CMS
+Lightweight CMS installation, connection required
+
+**Credit : StanByes, nivcoo**
