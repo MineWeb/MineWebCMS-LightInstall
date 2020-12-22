@@ -1,4 +1,4 @@
 # MineWebCMS-LightInstall
 Lightweight CMS installation, connection required
 
-**Credit : StanByes, nivcoo**
+**Credits : StanByes, nivcoo**
