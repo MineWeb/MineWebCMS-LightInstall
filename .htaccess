@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
    RewriteEngine on
+   RewriteBase    /
    RewriteRule    ^$ install/    [L]
    RewriteRule    (.*) install/$1 [L]
 </IfModule>

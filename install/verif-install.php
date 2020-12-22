@@ -200,6 +200,4 @@ if (function_exists('ini_get') && ini_get('allow_url_fopen') == "1") {
     $compatible['allowGetURL'] = true;
 }
 
-$needAffichCompatibility = (in_array(false, $compatible)) ? true : false;
-
-?>
+$needAffichCompatibility = in_array(false, $compatible);
