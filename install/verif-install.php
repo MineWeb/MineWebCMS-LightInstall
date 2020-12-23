@@ -169,6 +169,14 @@ $compatible['rewriteUrl'] = (!isset($InstallRewrite)) ? true : false;
 if (!$compatible['rewriteUrl']) {
     $help['rewriteUrl'] = "";
 
+    if (!file_exists(ROOT . DS . ".htaccess")) {
+        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant à la racine du site, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
+    }
+
+    if (!file_exists(ROOT . DS . "install" . DS . ".htaccess")) {
+        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant dans le dossier install, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
+    }
+
     if ($os != "windows") {
         $help['rewriteUrl'] .= "Essayez de taper : <b>sudo a2enmod rewrite</b> dans une invite de commande SSH. <br /><br />";
         $help['rewriteUrl'] .= "Ajoutez ces lignes : <br /> <br />";
