@@ -12,7 +12,7 @@ function affichImg($bool)
             'kg+lEj4mwBe5bC5h1OUqcwpdC60dxegRmR06TyjCF9G9z+qM2uCJmuMJmaNZaUrCSIi6X+jJIBBYtW5Cge7cd7sgoHDfDaAvKQGAlRZ' .
             'Yc6ltJlMxX03UzlaRlBdQrzSCwksLRbOpHUSb7pcsnxCCwngvM2Rm/ugUCi84fycr4l2t8Bb6iqTxSCgNIAAAAAElFTkSuQmCC' .
             '" alt="Oui"/>';
-    } elseif (!$bool) {
+    } else if (!$bool) {
         return '<img src="data:image/x-icon;base64,' .
             'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2V' .
             'SZWFkeXHJZTwAAAIhSURBVDjLlZPrThNRFIWJicmJz6BWiYbIkYDEG0JbBiitDQgm0PuFXqSAtKXtpE2hNuoPTXwSnwtExd6w0pl2Ot' .
@@ -55,15 +55,15 @@ function phpinfo2array()
     ob_start();
     phpinfo(-1);
 
-    $phpinfo = array('phpinfo' => array());
+    $phpinfo = ['phpinfo' => []];
 
     // Strip everything after the <h1>Configuration</h1> tag (other h1's)
     if (!preg_match('#(.*<h1[^>]*>\s*Configuration.*)<h1#s', ob_get_clean(), $matches)) {
-        return array();
+        return [];
     }
 
     $input = $matches[1];
-    $matches = array();
+    $matches = [];
 
     if (preg_match_all(
         '#(?:<h2.*?>(?:<a.*?>)?(.*?)(?:<\/a>)?<\/h2>)|' .
@@ -75,10 +75,10 @@ function phpinfo2array()
         foreach ($matches as $match) {
             $fn = strpos($match[0], '<th') === false ? $plainText : $titlePlainText;
             if (strlen($match[1])) {
-                $phpinfo[$match[1]] = array();
-            } elseif (isset($match[3])) {
+                $phpinfo[$match[1]] = [];
+            } else if (isset($match[3])) {
                 $keys1 = array_keys($phpinfo);
-                $phpinfo[end($keys1)][$fn($match[2])] = isset($match[4]) ? array($fn($match[3]), $fn($match[4])) : $fn($match[3]);
+                $phpinfo[end($keys1)][$fn($match[2])] = isset($match[4]) ? [$fn($match[3]), $fn($match[4])] : $fn($match[3]);
             } else {
                 $keys1 = array_keys($phpinfo);
                 $phpinfo[end($keys1)][] = $fn($match[2]);
@@ -122,7 +122,6 @@ $compatible = [];
  * @var string $help               Text to help user to solve his installation problems
  */
 
-
 $compatible['chmod'] = is_writable(ROOT . DS . 'install') && is_writable(ROOT) && is_writable(ROOT . DS . 'install' . DS . 'index.php') && is_writable(ROOT . DS . 'index.php') && is_writable(ROOT . DS . '.htaccess');
 
 if (!$compatible['chmod']) {
@@ -134,9 +133,7 @@ if (!$compatible['chmod']) {
         $help['chmod'] = "Le dossier parent ne peut être écrit. <br /><br />";
     } else
         $help['chmod'] = "Certains fichier ne peuvent pas être écris. <br /><br />";
-
 }
-
 
 $compatible['phpVersion'] = false;
 $compatible['pdo'] = false;
@@ -145,6 +142,7 @@ $compatible['rewriteUrl'] = false;
 $compatible['gd2'] = false;
 $compatible['openZip'] = false;
 $compatible['openSSL'] = false;
+$compatible['xml'] = false;
 
 $compatible['curl'] = extension_loaded('cURL');
 
@@ -173,8 +171,8 @@ if (!$compatible['rewriteUrl']) {
         $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant à la racine du site, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
     }
 
-    if (!file_exists(ROOT . DS . "install" . DS . ".htaccess")) {
-        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant dans le dossier install, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
+    if (!file_exists(ROOT . DS . "app" . DS . ".htaccess")) {
+        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant dans le dossier app/, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
     }
 
     if ($os != "windows") {
@@ -203,9 +201,16 @@ if (!$compatible['openZip']) {
 
 $compatible['openSSL'] = function_exists('openssl_pkey_new');
 
+$compatible['xml'] = extension_loaded('xml');
+
+if (!$compatible['xml']) {
+    $help['xml'] = "<a target='_blank' href='https://www.google.fr/search?query=Install+php" . $php . "-xml+on+$os'>Aide à propos de l'installation de php-xml sur ma machine</a><br /><br />";
+    $help['xml'] .= "<i class='fa fa-info'></i> Essayer cette commande : <b>sudo apt-get install php" . $php . "-xml</b>";
+}
+
 //allow_url_fopen
 if (function_exists('ini_get') && ini_get('allow_url_fopen') == "1") {
     $compatible['allowGetURL'] = true;
 }
 
-$needAffichCompatibility = in_array(false, $compatible);
+$needAffichCompatibility = (in_array(false, $compatible)) ? true : false;
