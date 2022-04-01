@@ -171,8 +171,8 @@ if (!$compatible['rewriteUrl']) {
         $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant à la racine du site, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
     }
 
-    if (!file_exists(ROOT . DS . "app" . DS . ".htaccess")) {
-        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant dans le dossier app/, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
+    if (!file_exists(ROOT . DS . "install" . DS . ".htaccess")) {
+        $help['rewriteUrl'] .= "Le fichier .htaccess semble manquant dans le dossier install, activez les fichiers cachés et transférez le sur votre site depuis l'archive de MineWeb. <br /><br />";
     }
 
     if ($os != "windows") {
